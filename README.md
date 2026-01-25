@@ -13,11 +13,13 @@
 **Result snapshot:** RESTful API with WebSocket support, PostgreSQL backend, Helmet security headers, and CORS configuration.
 
 **Quick review:**
+
 - **Security focus:** Helmet security headers, CORS policy, environment-based configuration, WebSocket security
 - **Key files:** `src/application.js` (middleware stack), `src/index.js` (WebSocket server), `src/routes/` (API endpoints)
 - **Start with:** Review Helmet configuration and CORS setup in `application.js`
 
 ## Overview
+
 Interview Scheduler API is a RESTful backend service built with Express.js and PostgreSQL that provides appointment booking functionality with real-time updates via WebSockets. This project demonstrates API security best practices including HTTP security headers, CORS configuration, environment-based secrets management, and WebSocket authentication considerations.
 
 **Developed during:** Lighthouse Labs Web Development Bootcamp (May - June 2021)  
@@ -26,6 +28,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 ## Security Relevance for Application Security
 
 ### HTTP Security Headers (Helmet)
+
 - **Helmet middleware** sets multiple security-related HTTP headers
 - **X-Content-Type-Options:** nosniff prevents MIME-type sniffing attacks
 - **X-Frame-Options:** DENY prevents clickjacking attacks
@@ -35,6 +38,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Demonstrates defense-in-depth approach to API security
 
 ### Cross-Origin Resource Sharing (CORS)
+
 - **CORS middleware** controls which domains can access the API
 - **Origin validation** prevents unauthorized cross-domain requests
 - **Preflight request handling** for complex CORS scenarios
@@ -42,6 +46,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Prevents CSRF attacks from malicious websites
 
 ### Environment-Based Configuration
+
 - **dotenv** for environment variable management
 - **Credentials never in code** - stored in .env files (gitignored)
 - **.env.example** template prevents accidental credential commits
@@ -49,6 +54,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Demonstrates secrets management best practices
 
 ### WebSocket Security
+
 - **WebSocket server** integrated with HTTP server for authentication context
 - **Message validation** prevents injection through WebSocket messages
 - **Broadcast authentication** ensures only authorized clients receive updates
@@ -56,6 +62,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Demonstrates real-time communication security patterns
 
 ### API Design Security
+
 - **RESTful conventions** make API behavior predictable and reviewable
 - **HTTP method semantics** (GET for reads, PUT for updates, DELETE for removals)
 - **Idempotent operations** prevent unintended side effects on retry
@@ -63,6 +70,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - **JSON-only responses** with Content-Type validation
 
 ### Database Security (PostgreSQL)
+
 - **Parameterized queries** via pg library prevent SQL injection
 - **Database connection pooling** manages resources securely
 - **Environment-based credentials** keep DB passwords out of code
@@ -70,6 +78,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - **Test database isolation** prevents test data leaks to production
 
 ### Error Handling & Information Disclosure
+
 - **Generic error responses** to clients prevent information leakage
 - **Detailed logging server-side** for debugging without exposing internals
 - **Debug endpoints** only in development environment
@@ -77,6 +86,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Demonstrates balance between usability and security
 
 ## Objectives
+
 - Build secure RESTful API with industry-standard security headers
 - Implement real-time updates with WebSocket security
 - Configure CORS appropriately for cross-origin requests
@@ -84,6 +94,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - Demonstrate API security testing and error handling
 
 ## Methodology
+
 - **Express.js** for routing and middleware architecture
 - **Helmet** for HTTP security headers
 - **CORS** for cross-origin resource sharing policy
@@ -92,6 +103,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - **dotenv** for environment variable management
 
 ## Key Features
+
 - **RESTful API:** Full CRUD operations for appointments, days, and interviewers
 - **Real-time Updates:** WebSocket broadcasts for appointment changes
 - **Security Headers:** Helmet-provided protection against common attacks
@@ -101,6 +113,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - **Debug Endpoints:** Development-only database reset functionality
 
 ## Technologies Used
+
 - **Backend:** Node.js, Express.js 4.16
 - **Database:** PostgreSQL with pg driver
 - **Security:** Helmet 3.18, CORS 2.8
@@ -110,6 +123,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 - **Development:** nodemon for hot reloading
 
 ## Application Security Lessons Learned
+
 - **Security headers are quick wins:** Helmet provides significant protection with minimal code
 - **CORS is not authentication:** It protects browsers, but API needs its own auth
 - **Environment variables prevent leaks:** Never commit credentials to version control
@@ -127,6 +141,7 @@ Interview Scheduler API is a RESTful backend service built with Express.js and P
 Returns available days with appointment spots.
 
 Response:
+
 ```json
 [
   {
@@ -146,6 +161,7 @@ Response:
 Returns all appointments.
 
 Response:
+
 ```json
 {
   "1": {
@@ -164,6 +180,7 @@ Response:
 Create or update an appointment.
 
 Request Body:
+
 ```json
 {
   "interview": {
@@ -188,6 +205,7 @@ Response: `204 No Content` (success) or `500 Internal Server Error`
 Returns all available interviewers.
 
 Response:
+
 ```json
 {
   "1": {
@@ -207,16 +225,19 @@ Resets database to initial seed state. **Only available in development/test mode
 ## WebSocket Events
 
 **Client → Server:**
+
 - `ping` - Connection health check
   - Server responds with `pong`
 
 **Server → Client:**
+
 - `SET_INTERVIEW` - Appointment created/updated
   - Payload: `{ type: "SET_INTERVIEW", id: Number, interview: Object }`
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v10.x or higher)
 - PostgreSQL (v9.6 or higher)
 - npm (v6.x or higher)
@@ -225,22 +246,26 @@ Resets database to initial seed state. **Only available in development/test mode
 ### Database Setup
 
 1. **Login to PostgreSQL**
+
    ```bash
    psql -U development
    # Password: development
    ```
 
 2. **Create database**
+
    ```sql
    CREATE DATABASE scheduler_development;
    ```
 
 3. **Configure environment**
+
    ```bash
    cp .env.example .env.development
    ```
 
    Edit `.env.development`:
+
    ```
    PGHOST=localhost
    PGUSER=development
@@ -252,17 +277,20 @@ Resets database to initial seed state. **Only available in development/test mode
 ### Application Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/VioletFigueroa/scheduler-api.git
    cd scheduler-api
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the server**
+
    ```bash
    npm start
    # Server runs on http://localhost:8001
@@ -271,6 +299,7 @@ Resets database to initial seed state. **Only available in development/test mode
 ### Seeding the Database
 
 **Option 1: Using curl**
+
 ```bash
 curl http://localhost:8001/api/debug/reset
 ```
@@ -283,6 +312,7 @@ Navigate to `http://localhost:8001/api/debug/reset`
 ### Running in Error Mode
 
 Test client error handling by forcing server errors:
+
 ```bash
 npm run error
 ```
@@ -292,6 +322,7 @@ All save/delete operations will return `500 Internal Server Error`.
 ## Security Configuration Examples
 
 ### Helmet Security Headers
+
 ```javascript
 const helmet = require('helmet');
 app.use(helmet());
@@ -306,6 +337,7 @@ app.use(helmet());
 ```
 
 ### CORS Configuration
+
 ```javascript
 const cors = require('cors');
 app.use(cors());
@@ -318,6 +350,7 @@ app.use(cors({
 ```
 
 ### WebSocket Security
+
 ```javascript
 wss.on('connection', socket => {
   // Validate connection origin
@@ -344,6 +377,7 @@ This project demonstrates essential AppSec API security skills:
 5. **Defense in Depth:** Layering multiple security controls (headers, CORS, input validation)
 
 **API security skills critical for AppSec:**
+
 - **Security Architecture:** Designing secure REST APIs and real-time services
 - **Code Review:** Identifying missing security headers, misconfigured CORS, exposed secrets
 - **Penetration Testing:** Testing APIs for injection, broken authentication, excessive data exposure
@@ -361,6 +395,7 @@ This backend API pairs with the frontend (Interview Scheduler) to demonstrate fu
     "interviewer": Number
   }
 }
+
 ```
 
 `DELETE /api/appointments/:id`
